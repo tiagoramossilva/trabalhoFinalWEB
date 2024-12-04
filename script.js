@@ -1,9 +1,8 @@
-const BASE_URL = "http://localhost:3000"; // ou a URL do seu servidor
+const BASE_URL = "http://localhost:3000"; 
 
 let clienteEditando = null;
 let produtoEditando = null;
 
-// Função para criar ou atualizar cliente
 document.getElementById("formCreateCliente").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -18,7 +17,6 @@ document.getElementById("formCreateCliente").addEventListener("submit", async (e
   try {
     let response;
     if (clienteEditando) {
-      // Atualizando o cliente
       response = await fetch(`${BASE_URL}/clientes/${clienteEditando}`, {
         method: "PUT",
         headers: {
@@ -27,7 +25,6 @@ document.getElementById("formCreateCliente").addEventListener("submit", async (e
         body: JSON.stringify({ nome, cpf }),
       });
     } else {
-      // Criando novo cliente
       response = await fetch(`${BASE_URL}/clientes`, {
         method: "POST",
         headers: {
@@ -40,8 +37,8 @@ document.getElementById("formCreateCliente").addEventListener("submit", async (e
     if (response.ok) {
       const data = await response.text();
       alert(data);
-      loadClientes(); // Atualiza a lista de clientes
-      resetClienteForm(); // Reseta o formulário
+      loadClientes(); 
+      resetClienteForm(); 
     } else {
       alert("Erro ao adicionar ou atualizar cliente");
     }
@@ -51,7 +48,6 @@ document.getElementById("formCreateCliente").addEventListener("submit", async (e
   }
 });
 
-// Função para criar ou atualizar produto
 document.getElementById("formCreateProduto").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -66,7 +62,6 @@ document.getElementById("formCreateProduto").addEventListener("submit", async (e
   try {
     let response;
     if (produtoEditando) {
-      // Atualizando o produto
       response = await fetch(`${BASE_URL}/produtos/${produtoEditando}`, {
         method: "PUT",
         headers: {
@@ -75,7 +70,6 @@ document.getElementById("formCreateProduto").addEventListener("submit", async (e
         body: JSON.stringify({ Nome: nome, Preco: parseFloat(preco) }),
       });
     } else {
-      // Criando novo produto
       response = await fetch(`${BASE_URL}/produtos`, {
         method: "POST",
         headers: {
@@ -88,8 +82,8 @@ document.getElementById("formCreateProduto").addEventListener("submit", async (e
     if (response.ok) {
       const data = await response.text();
       alert(data);
-      loadProdutos(); // Atualiza a lista de produtos
-      resetProdutoForm(); // Reseta o formulário
+      loadProdutos(); 
+      resetProdutoForm(); 
     } else {
       alert("Erro ao adicionar ou atualizar produto");
     }
@@ -99,7 +93,6 @@ document.getElementById("formCreateProduto").addEventListener("submit", async (e
   }
 });
 
-// Função para carregar e exibir todos os clientes cadastrados
 async function loadClientes() {
   try {
     const response = await fetch(`${BASE_URL}/clientes`);
@@ -125,7 +118,6 @@ async function loadClientes() {
   }
 }
 
-// Função para carregar e exibir todos os produtos cadastrados
 async function loadProdutos() {
   try {
     const response = await fetch(`${BASE_URL}/produtos`);
@@ -151,7 +143,6 @@ async function loadProdutos() {
   }
 }
 
-// Função para deletar cliente
 async function deleteCliente(clienteId) {
   try {
     const response = await fetch(`${BASE_URL}/clientes/${clienteId}`, {
@@ -160,7 +151,7 @@ async function deleteCliente(clienteId) {
 
     if (response.ok) {
       alert("Cliente deletado com sucesso!");
-      loadClientes(); // Atualiza a lista de clientes
+      loadClientes(); 
     } else {
       alert("Erro ao deletar cliente");
     }
@@ -170,17 +161,14 @@ async function deleteCliente(clienteId) {
   }
 }
 
-// Função para editar cliente
 function editCliente(clienteId, nome, cpf) {
   clienteEditando = clienteId;
   document.getElementById("nomeCliente").value = nome;
   document.getElementById("cpfCliente").value = cpf;
 
-  // Alterando o texto do botão para "Atualizar"
   document.getElementById("formCreateCliente").querySelector("button").textContent = "Atualizar Cliente";
 }
 
-// Função para deletar produto
 async function deleteProduto(produtoId) {
   try {
     const response = await fetch(`${BASE_URL}/produtos/${produtoId}`, {
@@ -189,7 +177,7 @@ async function deleteProduto(produtoId) {
 
     if (response.ok) {
       alert("Produto deletado com sucesso!");
-      loadProdutos(); // Atualiza a lista de produtos
+      loadProdutos();
     } else {
       alert("Erro ao deletar produto");
     }
@@ -199,37 +187,30 @@ async function deleteProduto(produtoId) {
   }
 }
 
-// Função para editar produto
 function editProduto(produtoId, nome, preco) {
   produtoEditando = produtoId;
   document.getElementById("nomeProduto").value = nome;
   document.getElementById("precoProduto").value = preco;
 
-  // Alterando o texto do botão para "Atualizar"
   document.getElementById("formCreateProduto").querySelector("button").textContent = "Atualizar Produto";
 }
 
-// Reseta o formulário de cliente
 function resetClienteForm() {
   clienteEditando = null;
   document.getElementById("nomeCliente").value = "";
   document.getElementById("cpfCliente").value = "";
 
-  // Volta o botão para "Criar Cliente"
   document.getElementById("formCreateCliente").querySelector("button").textContent = "Criar Cliente";
 }
 
-// Reseta o formulário de produto
 function resetProdutoForm() {
   produtoEditando = null;
   document.getElementById("nomeProduto").value = "";
   document.getElementById("precoProduto").value = "";
 
-  // Volta o botão para "Criar Produto"
   document.getElementById("formCreateProduto").querySelector("button").textContent = "Criar Produto";
 }
 
-// Carrega os dados iniciais ao carregar a página
 window.onload = () => {
   loadClientes();
   loadProdutos();
